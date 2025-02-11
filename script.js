@@ -43,7 +43,6 @@ function fetchWeatherByCoords(lat, lon) {
 
 searchInput.addEventListener("input", fetchSuggestions);
 searchInput.addEventListener("keydown", handleKeyboardNavigation);
-searchBtn.addEventListener("click", fetchWeather);
 
 function fetchSuggestions() {
     let query = searchInput.value.trim();
@@ -119,11 +118,12 @@ function fetchWeather() {
 }
 
 function displayWeather(data) {
-    document.getElementById("temperature").innerText = `${data.current.temp_c}°C`;
-    document.getElementById("high-low").innerText = `High: ${data.forecast.forecastday[0].day.maxtemp_c}°C | Low: ${data.forecast.forecastday[0].day.mintemp_c}°C`;
+    document.getElementById("temperature").innerText = `${Math.round(data.current.temp_c)}°C`;
+    document.getElementById("high-low").innerText = `High: ${Math.round(data.forecast.forecastday[0].day.maxtemp_c)}°C · Low: ${Math.round(data.forecast.forecastday[0].day.mintemp_c)}°C`;
 
     // Hourly forecast
-    let hourlyHtml = "<h3>Hourly Forecast</h3>";
+    let hourlyHtmlHeader = "<h3>Hourly Forecast</h3>";
+    let hourlyHtml = "";
     let currentHour = new Date().getHours(); // Get current hour
     let hoursDisplayed = 0; // Count for 12-hour limit
 
@@ -135,17 +135,19 @@ function displayWeather(data) {
 
             // If within the next 12 hours, display
             if (hoursDisplayed < 12 && (forecastDate > new Date() || forecastHour >= currentHour)) {
-                let formattedTime = forecastDate.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: true });
+                let formattedTime = forecastDate.toLocaleTimeString([], { hour: '2-digit', hour12: true });
                 hourlyHtml += `<div class="forecast-card hourly">${formattedTime}<br>${hour.temp_c}°C</div>`;
                 hoursDisplayed++;
             }
         });
     });
 
+    document.getElementById("hourly-forecast-header").innerHTML = hourlyHtmlHeader;
     document.getElementById("hourly-forecast").innerHTML = hourlyHtml;
 
     // 10-day forecast
-    let tenDayHtml = "<h3>10-Day Forecast</h3>";
+    let tenDayHtmlHeader = "<h3>10-Day Forecast</h3>";
+    let tenDayHtml = "";
     data.forecast.forecastday.forEach(day => {
         let date = new Date(day.date).toLocaleDateString("en-GB", { day: 'numeric', month: 'short' });
         tenDayHtml += `
@@ -155,5 +157,6 @@ function displayWeather(data) {
             </div>
         `;
     });
+    document.getElementById("ten-day-forecast-header").innerHTML = tenDayHtmlHeader;
     document.getElementById("ten-day-forecast").innerHTML = tenDayHtml;
 }
