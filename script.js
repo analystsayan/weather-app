@@ -1,5 +1,5 @@
 const apiKey = "ff9fd558ea454839b59133326251002";
-const apiUrl = "http://api.weatherapi.com/v1/forecast.json?key=";
+const apiUrl = "https://api.weatherapi.com/v1/forecast.json?key=";
 const searchApiUrl = "http://api.weatherapi.com/v1/search.json?key=";
 
 const searchInput = document.getElementById("location");
