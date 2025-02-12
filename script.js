@@ -136,7 +136,10 @@ function displayWeather(data) {
             // If within the next 12 hours, display
             if (hoursDisplayed < 12 && (forecastDate > new Date() || forecastHour >= currentHour)) {
                 let formattedTime = forecastDate.toLocaleTimeString([], { hour: '2-digit', hour12: true });
-                hourlyHtml += `<div class="forecast-card hourly">${formattedTime}<br>${hour.temp_c}°C</div>`;
+                hourlyHtml += `<div class="forecast-card hourly">
+                ${Math.round(hour.temp_c)}°C
+                <strong>${formattedTime}</strong> 
+                </div>`;
                 hoursDisplayed++;
             }
         });
@@ -148,15 +151,22 @@ function displayWeather(data) {
     // 10-day forecast
     let tenDayHtmlHeader = "<h3>10-Day Forecast</h3>";
     let tenDayHtml = "";
-    data.forecast.forecastday.forEach(day => {
-        let date = new Date(day.date).toLocaleDateString("en-GB", { day: 'numeric', month: 'short' });
+
+    data.forecast.forecastday.forEach((day, index) => {
+        let dateObj = new Date(day.date);
+        let dayName = index === 0 ? "Today" : dateObj.toLocaleDateString("en-GB", { weekday: 'long' }); // "Today" for the first item
+        let dateFormatted = dateObj.toLocaleDateString("en-GB", { day: 'numeric', month: 'short' });
+
         tenDayHtml += `
             <div class="forecast-card ten-day">
-                <strong>${date}</strong>
-                ${day.day.maxtemp_c}° / ${day.day.mintemp_c}°
+                <strong>${dayName}, ${dateFormatted}</strong>
+                ${Math.round(day.day.mintemp_c)}° / ${Math.round(day.day.maxtemp_c)}°
             </div>
         `;
     });
+
     document.getElementById("ten-day-forecast-header").innerHTML = tenDayHtmlHeader;
     document.getElementById("ten-day-forecast").innerHTML = tenDayHtml;
+
+
 }

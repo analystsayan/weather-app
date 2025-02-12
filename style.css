@@ -111,7 +111,6 @@ input {
 .forecast-card {
     background: var(--secondary-color);
     padding: 10px;
-    margin: 5px;
     border-radius: 10px;
     min-width: 80px;
     color: #fff;
@@ -120,6 +119,14 @@ input {
 .hourly-forecast {
     display: grid;
     grid-template-columns: auto auto auto auto;
+    gap: 5px;
+}
+
+.hourly {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
 }
 
 .ten-day-forecast {
@@ -135,13 +142,13 @@ input {
     width: 100%;
     padding: 0;
     background-color: var(--primary-color);
+    gap: 5px;
 }
 
 .ten-day {
     width: 100%;
     display: flex;
     justify-content: space-between;
-    margin: .1em;
     border-radius: .3em;
     padding: 1em;
 }
